@@ -1,15 +1,15 @@
-const postModel = require('../models/post.model');
-const userModel = require('../models/user.model');
+let postModel = require('../models/post.model');
+let userModel = require('../models/user.model');
 
-const getPosts = async (req, res) => {
+let getPosts = async (req, res) => {
     try{
-        const { pageSize, page } = req.query;
+        let { pageSize, page } = req.query;
         if (!pageSize || !page) {
             pageSize = 2;
             page = 1;
         }
-        const posts = await postModel.find().skip((page - 1) * pageSize).limit(pageSize * 1);
-        const totalPosts = await postModel.find().countDocuments();
+        let posts = await postModel.find().skip((page - 1) * pageSize).limit(pageSize * 1);
+        let totalPosts = await postModel.find().countDocuments();
         res.json({ posts, totalPosts });
 
     }
@@ -17,10 +17,10 @@ const getPosts = async (req, res) => {
         res.status(500).send({ msg: e.message })
     }
 }
-const postPost = async (req, res) => {
+let postPost = async (req, res) => {
     try {
-        const { title, content } = req.body;
-        const post = new postModel({ title, content, imgPath: req.file.path, createdBy: req.user.id });
+        let { title, content } = req.body;
+        let post = new postModel({ title, content, imgPath: req.file.path, createdBy: req.user.id });
         post.imgPath = req.file.path; 
         await post.save();
         await userModel.findByIdAndUpdate(req.user.id, { $push: { posts: post._id } }, { new: true });
@@ -31,9 +31,9 @@ const postPost = async (req, res) => {
     }
 }
 
-const editPost = async (req, res) => {
+let editPost = async (req, res) => {
     try{
-        const { id } = req.params;
+        let { id } = req.params;
         let post;
         if(!req.file){
              post = {
@@ -61,7 +61,7 @@ const editPost = async (req, res) => {
 
 }
 
-const deletePost = async (req, res) => {
+let deletePost = async (req, res) => {
     try {
     await postModel.findByIdAndRemove(req.params.id);
     await userModel.findByIdAndUpdate(req.user.id, { $pull: { posts: req.params.id } }, { new: true });
@@ -72,9 +72,9 @@ const deletePost = async (req, res) => {
         res.status(500).send({ msg: err.message })
     }
 }
-const getPost = async (req, res) => {
+let getPost = async (req, res) => {
     try {
-        const post = await postModel.findById(req.params.id);
+        let post = await postModel.findById(req.params.id);
         res.json(post);
     }
     catch (err) {
