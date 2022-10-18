@@ -50,4 +50,4 @@ app.use((err, req, res, next) => {
     res.send(err.message);
 }
 )
-app.listen(process.env.PORT||3000, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT||3000, () => console.log(`Example app listening `));
