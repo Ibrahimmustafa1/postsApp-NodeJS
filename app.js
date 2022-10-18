@@ -28,7 +28,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(cors());
-const port = 3000;
+
 mongoose.connect(process.env.DBCONEECTION, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     console.log('Connected to database!');
 }).catch(e=>{
@@ -50,4 +50,4 @@ app.use((err, req, res, next) => {
     res.send(err.message);
 }
 )
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT, () => console.log(`Example app listening on port ${port}!`));
